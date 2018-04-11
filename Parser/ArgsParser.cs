@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,7 +11,7 @@ namespace Parser
     public class ArgsParser
     {
         internal HashSet<FlagOption> FlagOptions { get; set; } = new HashSet<FlagOption>();
-        Regex CombinedFlagsRegex = new Regex("^-[A-Za-z]*$");
+        readonly Regex CombinedFlagsRegex = new Regex("^-[A-Za-z]*$");
 
         /// <summary>
         /// Validate args, will throw InvalidOperationException when parsing duplicated args.
@@ -25,7 +24,7 @@ namespace Parser
         public ArgsParsingResult Parse(string[] args)
         {
             ValidateArgs(args);
-            var duplicatedArgs = ValidateDuplicatedArgs(args);
+            var duplicatedArgs = GetDuplicatedArgs(args);
             if (duplicatedArgs != null)
             {
                 var result = new ArgsParsingResult();
@@ -40,42 +39,46 @@ namespace Parser
         ArgsParsingResult ParseArgs(string[] args)
         {
             var result = new ArgsParsingResult();
+            var needParseArgs = GetNeedParseArgs(args);
+
+            foreach (var arg in needParseArgs)
+            {
+                var flagOption = GetFlag(arg.Arg);
+                if (flagOption == null)
+                {
+                    result.IsSuccess = false;
+                    result.Error = new ParsingError(ParsingErrorCode.FreeValueNotSupported, arg.Trigger);
+                    return result;
+                }
+
+                result.FlagOptions.Add(flagOption);
+            }
+
+            result.IsSuccess = true;
+            return result;
+        }
+
+        List<ArgTrigger> GetNeedParseArgs(string[] args)
+        {
+            List<ArgTrigger> needParseArgs = new List<ArgTrigger>();
             foreach (var arg in args)
             {
-                if (CombinedFlagsRegex.IsMatch(arg))
+                if (IsCombinedArgs(arg))
                 {
                     var combinedArgs = arg.Substring(1, arg.Length - 1);
-                    string[] splitedArgs = combinedArgs.Select(c => $"-{c}").ToArray();
-                    foreach (var a in splitedArgs)
-                    {
-                        var flagOption = GetFlag(a);
-                        if (flagOption == null)
-                        {
-                            result.IsSuccess = false;
-                            result.Error = new ParsingError(ParsingErrorCode.FreeValueNotSupported, arg);
-                            return result;
-                        }
-                        result.FlagOptions.Add(flagOption);
-                    }
-
-                    result.IsSuccess = true;
+                    needParseArgs.AddRange(combinedArgs.Select(c => new ArgTrigger($"-{c}", arg)).ToArray());
                 }
                 else
                 {
-                    var flagOption = GetFlag(arg);
-                    if (flagOption == null)
-                    {
-                        result.IsSuccess = false;
-                        result.Error = new ParsingError(ParsingErrorCode.FreeValueNotSupported, arg);
-                        return result;
-                    }
-                    result.FlagOptions.Add(flagOption);
-                    result.IsSuccess = true;
+                    needParseArgs.Add(new ArgTrigger(arg, arg));
                 }
-
             }
+            return needParseArgs;
+        }
 
-            return result;
+        bool IsCombinedArgs(string arg)
+        {
+            return CombinedFlagsRegex.IsMatch(arg);
         }
 
         FlagOption GetFlag(string arg)
@@ -97,20 +100,34 @@ namespace Parser
 
         }
 
-        string ValidateDuplicatedArgs(string[] args)
+        string GetDuplicatedArgs(string[] args)
         {
             var parsedFlagOptions = new HashSet<FlagOption>();
-            foreach (var arg in args)
+
+            var needParseArgs = GetNeedParseArgs(args);
+            foreach (var arg in needParseArgs)
             {
-                var flagOption = GetFlag(arg);
-                if (flagOption != null && !parsedFlagOptions.Add(flagOption))
+                var flag = GetFlag(arg.Arg);
+                var isDuplicated = flag != null && !parsedFlagOptions.Add(flag);
+                if (isDuplicated)
                 {
-                    return arg;
+                    return arg.Trigger;
                 }
             }
-
             return null;
         }
+    }
+
+    class ArgTrigger
+    {
+        public ArgTrigger(string arg, string trigger)
+        {
+            Arg = arg;
+            Trigger = trigger;
+        }
+
+        public string Arg { get; }
+        public string Trigger { get; }
     }
 
     /// <summary>

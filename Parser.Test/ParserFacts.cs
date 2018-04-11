@@ -234,5 +234,25 @@ namespace Parser.Test
             Assert.Equal("-fv", result.Error.Trigger);
         }
 
+        [Fact]
+        void should_parse_failed_and_return_DuplicateFlagsInArgs_error_when_given_duplicate_flags()
+        {
+            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').AddFlagOption(null,'v').Build();
+            var result = parser.Parse(new[] { "-fv", "--flag" });
+            Assert.False(result.IsSuccess);
+            Assert.Equal(ParsingErrorCode.DuplicateFlagsInArgs, result.Error.Code);
+            Assert.Equal("--flag", result.Error.Trigger);
+        }
+
+        [Fact]
+        void should_parse_failed_and_return_DuplicateFlagsInArgs_error_when_given_combined_flags_contains_duplicated_flag()
+        {
+            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').Build();
+            var result = parser.Parse(new[] { "-ff" });
+            Assert.False(result.IsSuccess);
+            Assert.Equal(ParsingErrorCode.DuplicateFlagsInArgs, result.Error.Code);
+            Assert.Equal("-ff", result.Error.Trigger);
+        }
+
     }
 }
