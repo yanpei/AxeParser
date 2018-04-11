@@ -254,5 +254,17 @@ namespace Parser.Test
             Assert.Equal("-ff", result.Error.Trigger);
         }
 
+
+        [Fact]
+        void should_throw_ArgumentException_when_get_flag_value_of_combined_flags()
+        {
+            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').AddFlagOption(null, 'v').Build();
+            var result = parser.Parse(new[] { "-fv" });
+            Assert.True(result.IsSuccess);
+            Assert.True(result.GetFlagValue("-f"));
+            Assert.True(result.GetFlagValue("-v"));
+            Assert.Equal("flag is invalid", Assert.Throws<ArgumentException>(() => result.GetFlagValue("-fv")).Message);
+        }
+
     }
 }

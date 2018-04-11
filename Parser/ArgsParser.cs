@@ -163,7 +163,7 @@ namespace Parser
                 }
                 return FlagOptions.Any(f => string.Equals(f.FullForm, option, StringComparison.OrdinalIgnoreCase));
             }
-            else if (flag.StartsWith("-"))
+            if (flag.StartsWith("-"))
             {
                 var option = flag.Substring(1, flag.Length - 1);
                 if (!FlagRegex.AbbrevationFormRegex.IsMatch(option))
