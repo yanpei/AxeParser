@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Parser.Test
 {
-    public class ParserFacts
+    public class ParseFacts
     {
         [Fact]
         void should_parse_flag_successfully_by_full_name()
@@ -55,30 +55,6 @@ namespace Parser.Test
             Assert.True(result.GetFlagValue("--_Fla26--182-g-"));
         }
 
-        [Fact]
-        void should_contain_full_name_or_abbrevation_at_least()
-        {
-            Assert.Throws<ArgumentException>(() => new ArgsParserBuilder().AddFlagOption(null, null, "This is a description."));
-        }
-
-        [Theory]
-        [InlineData("-flag")]
-        [InlineData("")]
-        [InlineData("fl$g")]
-        void should_match_full_name_define_rule(string fullName)
-        {
-            Assert.Throws<ArgumentException>(() => new ArgsParserBuilder().AddFlagOption(fullName, 'f', "This is a description."));
-        }
-
-        [Theory]
-        [InlineData('-')]
-        [InlineData('1')]
-        [InlineData(' ')]
-        [InlineData('$')]
-        void should_match_abbrevation_define_rule(char abbrevationForm)
-        {
-            Assert.Throws<ArgumentException>(() => new ArgsParserBuilder().AddFlagOption("flag", abbrevationForm, "This is a description."));
-        }
 
         [Theory]
         [InlineData("--flag", "--flag", "--flag")]
@@ -125,32 +101,6 @@ namespace Parser.Test
             Assert.Equal("-rf", result.Error.Trigger);
         }
 
-        [Theory]
-        [InlineData("--flag")]
-        [InlineData("-f")]
-        [InlineData("--version")]
-        [InlineData("-v")]
-        void should_can_add_multiple_flags(string arg)
-        {
-            var parser = new ArgsParserBuilder().AddFlagOption("flag",  'f').AddFlagOption("version", 'v').Build();
-            ArgsParsingResult result = parser.Parse(new[] { arg });
-
-            Assert.True(result.IsSuccess);
-            Assert.Null(result.Error);
-            Assert.True(result.GetFlagValue(arg));
-        }
-
-        [Theory]
-        [InlineData("flag",'f', "flag", 'v', "conflict full form")]
-        [InlineData("flag",'f', "Flag", 'v', "conflict full form")]
-        [InlineData("flag",'f', "version", 'F', "conflict abbrevation form")]
-        [InlineData("flag",'f', "version", 'f', "conflict abbrevation form")]
-        void should_throw_ArgumentException_when_add_conflict_flag(string fullForm1, char? abbrevationForm1, string fullForm2, char? abbrevationForm2, string errorMessage)
-        {
-            var builder = new ArgsParserBuilder().AddFlagOption(fullForm1, abbrevationForm1);
-
-            Assert.Equal(errorMessage, Assert.Throws<ArgumentException>(() => builder.AddFlagOption(fullForm2, abbrevationForm2)).Message);
-        }
 
         [Fact]
         void should_throw_ArgumentNullException_when_parse_null_args()
@@ -168,41 +118,6 @@ namespace Parser.Test
             Assert.Equal("cannot parse args with null", Assert.Throws<ArgumentException>(() => parser.Parse(new []{"-f", null })).Message);
         }
 
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        void should_throw_ArgumentNullException_when_getValue(string flag)
-        {
-            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').Build();
-            var argsParsingResult = parser.Parse(new[] {"--flag"});
-            Assert.Throws<ArgumentNullException>(() => argsParsingResult.GetFlagValue(flag));
-        }
-
-        [Fact]
-        void should_throw_InvalidOperationException_when_getValue_but_parse_failed()
-        {
-            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').Build();
-            var argsParsingResult = parser.Parse(new[] { "-v" });
-            Assert.False(argsParsingResult.IsSuccess);
-            Assert.Equal("only can get flag value when parse succeed", Assert.Throws<InvalidOperationException>(() => argsParsingResult.GetFlagValue("-v")).Message);
-        }
-
-        [Theory]
-        [InlineData("-rf")]
-        [InlineData("--")]
-        [InlineData("-1")]
-        [InlineData("- ")]
-        [InlineData("-$")]
-        [InlineData("---flag")]
-        [InlineData("--")]
-        [InlineData("--fl$g")]
-        void should_throw_ArgumentException_when_get_invalid_flag_value(string flag)
-        {
-            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').Build();
-            var result = parser.Parse(new[] { "-f" });
-            Assert.True(result.IsSuccess);
-            Assert.Equal("flag is invalid", Assert.Throws<ArgumentException>(() => result.GetFlagValue(flag)).Message);
-        }
 
         [Fact]
         void should_can_parse_multiple_flags()
@@ -253,18 +168,5 @@ namespace Parser.Test
             Assert.Equal(ParsingErrorCode.DuplicateFlagsInArgs, result.Error.Code);
             Assert.Equal("-ff", result.Error.Trigger);
         }
-
-
-        [Fact]
-        void should_throw_ArgumentException_when_get_flag_value_of_combined_flags()
-        {
-            var parser = new ArgsParserBuilder().AddFlagOption("flag", 'f').AddFlagOption(null, 'v').Build();
-            var result = parser.Parse(new[] { "-fv" });
-            Assert.True(result.IsSuccess);
-            Assert.True(result.GetFlagValue("-f"));
-            Assert.True(result.GetFlagValue("-v"));
-            Assert.Equal("flag is invalid", Assert.Throws<ArgumentException>(() => result.GetFlagValue("-fv")).Message);
-        }
-
     }
 }

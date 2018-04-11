@@ -54,7 +54,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParserFacts.cs" />
+    <Compile Include="AddFlagsFacts.cs" />
+    <Compile Include="GetFlagValueFacts.cs" />
+    <Compile Include="ParseFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
