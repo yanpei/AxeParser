@@ -54,6 +54,11 @@ namespace Parser
 
         public ArgsParserBuilder EndCommand()
         {
+            if (argsParserBuilder.DefaultCommandBuilder != null)
+            {
+                throw new InvalidOperationException("Default Command is arleady defined");
+            }
+
             argsParserBuilder.DefaultCommandBuilder = this;
             return argsParserBuilder;
         }

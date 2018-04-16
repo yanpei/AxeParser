@@ -14,7 +14,6 @@ namespace Parser
         {
             return new CommandBuilder(this);    
         }
-        
 
         /// <returns>Parser</returns>
         public ArgsParser Build()

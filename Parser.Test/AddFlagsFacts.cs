@@ -56,5 +56,14 @@ namespace Parser.Test
 
             Assert.Equal(errorMessage, Assert.Throws<ArgumentException>(() => builder.AddFlagOption(fullForm2, abbrevationForm2)).Message);
         }
+
+        [Fact]
+        void should_throw_InvalidOperationException_when_default_command_already_defined()
+        {
+            var builderAlreadyWithDefaultCommand = new ArgsParserBuilder().BeginDefaultCommand().EndCommand();
+            Assert.Equal("Default Command is arleady defined",
+                Assert.Throws<InvalidOperationException>(() =>
+                    builderAlreadyWithDefaultCommand.BeginDefaultCommand().EndCommand()).Message);
+        }
     }
 }
