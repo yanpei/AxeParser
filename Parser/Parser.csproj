@@ -38,6 +38,7 @@
     <Compile Include="ArgsParser.cs" />
     <Compile Include="ArgsParserBuilder.cs" />
     <Compile Include="ArgsParsingResult.cs" />
+    <Compile Include="CommandBuilder.cs" />
     <Compile Include="FlagOption.cs" />
     <Compile Include="FlagRegex.cs" />
     <Compile Include="ParsingError.cs" />
