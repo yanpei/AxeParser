@@ -8,7 +8,7 @@ namespace Parser
     /// </summary>
     public class ArgsParserBuilder
     {
-        internal CommandBuilder DefaultCommandBuilder { get; set; }
+        CommandBuilder defaultCommandBuilder;
 
         public CommandBuilder BeginDefaultCommand()
         {
@@ -18,7 +18,17 @@ namespace Parser
         /// <returns>Parser</returns>
         public ArgsParser Build()
         {
-            return DefaultCommandBuilder.parser;
+            return defaultCommandBuilder.parser;
+        }
+
+        internal void SetDefaultCommand(CommandBuilder commandBuilder)
+        {
+            if (defaultCommandBuilder != null)
+            {
+                throw new InvalidOperationException("Default Command is arleady defined");
+            }
+
+            defaultCommandBuilder = commandBuilder;
         }
     }
 }
