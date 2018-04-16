@@ -39,8 +39,10 @@
     <Compile Include="ArgsParserBuilder.cs" />
     <Compile Include="ArgsParsingResult.cs" />
     <Compile Include="CommandBuilder.cs" />
+    <Compile Include="CommandDefination.cs" />
     <Compile Include="FlagOption.cs" />
     <Compile Include="FlagRegex.cs" />
+    <Compile Include="ICommandDefinitionMetadata.cs" />
     <Compile Include="ParsingError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,11 +6,11 @@ namespace Parser
     public class CommandBuilder
     {
         internal readonly ArgsParser parser;
-        ArgsParserBuilder argsParserBuilder;
+        readonly ArgsParserBuilder argsParserBuilder;
 
-        public CommandBuilder(ArgsParserBuilder argsParserBuilder)
+        public CommandBuilder(ArgsParserBuilder argsParserBuilder, string symbol)
         {
-            parser = new ArgsParser();
+            parser = new ArgsParser(new CommandDefination(symbol));
             this.argsParserBuilder = argsParserBuilder;
         }
 

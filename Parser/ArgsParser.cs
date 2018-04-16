@@ -10,6 +10,17 @@ namespace Parser
     /// </summary>
     public class ArgsParser
     {
+        public ArgsParser(CommandDefination commandDefination)
+        {
+            if (commandDefination == null)
+            {
+                throw new ArgumentNullException(nameof(commandDefination));
+            }
+            command = commandDefination;
+        }
+
+        readonly CommandDefination command;
+
         internal HashSet<FlagOption> FlagOptions { get; set; } = new HashSet<FlagOption>();
 
         /// <summary>
@@ -54,6 +65,7 @@ namespace Parser
             }
 
             result.IsSuccess = true;
+            result.Command = command;
             return result;
         }
 

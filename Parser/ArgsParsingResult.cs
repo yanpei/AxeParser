@@ -11,6 +11,7 @@ namespace Parser
     {
         /// <value>Bool. Indicate parsing reslut success or not.</value>
         public bool IsSuccess { get; set; }
+        public ICommandDefinitionMetadata Command { get; internal set; }
         internal HashSet<FlagOption> FlagOptions { get; set; } = new HashSet<FlagOption>();
         /// <value>Error</value>
         public ParsingError Error { get; set; }

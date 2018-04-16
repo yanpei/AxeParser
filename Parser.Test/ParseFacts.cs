@@ -13,6 +13,8 @@ namespace Parser.Test
 
             Assert.True(result.IsSuccess);
             Assert.Null(result.Error);
+            Assert.NotNull(result.Command);
+            Assert.Null(result.Command.Symbol);
             Assert.True(result.GetFlagValue("--flag1"));
             Assert.True(result.GetFlagValue("--FlAg1"));
             Assert.True(result.GetFlagValue("-f"));
@@ -167,6 +169,29 @@ namespace Parser.Test
             Assert.False(result.IsSuccess);
             Assert.Equal(ParsingErrorCode.DuplicateFlagsInArgs, result.Error.Code);
             Assert.Equal("-ff", result.Error.Trigger);
+        }
+
+        [Fact]
+        void command_symbol_of_parsing_result_should_be_null_when_parse_default_command_successfully()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand().EndCommand()
+                .Build();
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Command);
+            Assert.Null(result.Command.Symbol);
+        }
+
+        [Fact]
+        void result_command_should_be_null_when_parse_failed()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand().EndCommand()
+                .Build();
+            ArgsParsingResult result = parser.Parse(new[] { "-f" });
+            Assert.False(result.IsSuccess);
+            Assert.Null(result.Command);
         }
     }
 }

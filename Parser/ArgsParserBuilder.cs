@@ -12,7 +12,7 @@ namespace Parser
 
         public CommandBuilder BeginDefaultCommand()
         {
-            return new CommandBuilder(this);    
+            return new CommandBuilder(this, null);    
         }
 
         /// <returns>Parser</returns>
