@@ -61,9 +61,10 @@ namespace Parser.Test
         void should_throw_InvalidOperationException_when_default_command_already_defined()
         {
             var builderAlreadyWithDefaultCommand = new ArgsParserBuilder().BeginDefaultCommand().EndCommand();
+            var builderDefineDefaultCommandAgain = builderAlreadyWithDefaultCommand.BeginDefaultCommand();
+
             Assert.Equal("Default Command is arleady defined",
-                Assert.Throws<InvalidOperationException>(() =>
-                    builderAlreadyWithDefaultCommand.BeginDefaultCommand().EndCommand()).Message);
+                Assert.Throws<InvalidOperationException>(() => builderDefineDefaultCommandAgain.EndCommand()).Message);
         }
     }
 }
