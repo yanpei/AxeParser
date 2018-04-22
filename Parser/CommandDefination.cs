@@ -9,6 +9,9 @@ namespace Parser
         public string Symbol { get; }
         internal HashSet<OptionDefinitiationMetadata> FlagOptions { get; set; } = new HashSet<OptionDefinitiationMetadata>();
 
-        public IOptionDefinitionMetadata[] GetRegisteredOptionsMetadata() { return FlagOptions.ToArray(); }
+        public IEnumerable<IOptionDefinitionMetadata> GetRegisteredOptionsMetadata()
+        {
+            return FlagOptions.ToArray();
+        }
     }
 }

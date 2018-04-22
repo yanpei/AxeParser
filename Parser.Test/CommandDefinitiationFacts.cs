@@ -22,5 +22,19 @@ namespace Parser.Test
             Assert.Equal('f', flagMetadata.SymbolMetadata.Abbreviation);
             Assert.Equal("flag description", flagMetadata.Description);
         }
+
+        [Fact]
+        void should_return_empty_when_get_registed_flags_of_comand_without_flags()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .EndCommand()
+                .Build();
+            ArgsParsingResult result = parser.Parse(Array.Empty<string>());
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Command);
+            IOptionDefinitionMetadata[] optionDefinitionMetadatas = result.Command.GetRegisteredOptionsMetadata().ToArray();
+            Assert.Empty(optionDefinitionMetadatas);
+        }
     }
 }
