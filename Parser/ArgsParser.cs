@@ -81,7 +81,7 @@ namespace Parser
             return FlagRegex.CombinedFlagsRegex.IsMatch(arg);
         }
 
-        FlagOption GetFlag(string arg)
+        OptionDefinitiationMetadata GetFlag(string arg)
         {
             return DefaultCommand.FlagOptions.FirstOrDefault(flag => flag.GetFlag(arg) != null);
         }
@@ -102,7 +102,7 @@ namespace Parser
 
         string GetDuplicatedArgs(string[] args)
         {
-            var parsedFlagOptions = new HashSet<FlagOption>();
+            var parsedFlagOptions = new HashSet<OptionDefinitiationMetadata>();
 
             var needParseArgs = GetNeedParseArgs(args);
             foreach (var arg in needParseArgs)

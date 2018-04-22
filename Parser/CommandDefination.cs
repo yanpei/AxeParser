@@ -6,7 +6,7 @@ namespace Parser
     {
         public CommandDefination(string symbol) { Symbol = symbol; }
         public string Symbol { get; }
-        internal HashSet<FlagOption> FlagOptions { get; set; } = new HashSet<FlagOption>();
+        internal HashSet<OptionDefinitiationMetadata> FlagOptions { get; set; } = new HashSet<OptionDefinitiationMetadata>();
 
     }
 }

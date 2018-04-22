@@ -12,7 +12,7 @@ namespace Parser
         /// <value>Bool. Indicate parsing reslut success or not.</value>
         public bool IsSuccess { get; set; }
         public ICommandDefinitionMetadata Command { get; internal set; }
-        internal HashSet<FlagOption> FlagOptions { get; set; } = new HashSet<FlagOption>();
+        internal HashSet<OptionDefinitiationMetadata> FlagOptions { get; set; } = new HashSet<OptionDefinitiationMetadata>();
         /// <value>Error</value>
         public ParsingError Error { get; set; }
 
@@ -36,7 +36,7 @@ namespace Parser
                 {
                     throw new ArgumentException("flag is invalid");
                 }
-                return FlagOptions.Any(f => string.Equals(f.FullForm, option, StringComparison.OrdinalIgnoreCase));
+                return FlagOptions.Any(f => string.Equals(f.OptionSymbolMetadata.FullForm, option, StringComparison.OrdinalIgnoreCase));
             }
             if (flag.StartsWith("-"))
             {
@@ -45,7 +45,7 @@ namespace Parser
                 {
                     throw new ArgumentException("flag is invalid");
                 }
-                return FlagOptions.Any(f => string.Equals(f.AbbrevationForm.ToString(), option, StringComparison.OrdinalIgnoreCase));
+                return FlagOptions.Any(f => string.Equals(f.OptionSymbolMetadata.AbbrevationForm.ToString(), option, StringComparison.OrdinalIgnoreCase));
             }
             return false;
         }

@@ -26,7 +26,7 @@ namespace Parser
             ValidateFullForm(fullForm);
             ValidateAbbrevationForm(abbrevationForm);
 
-            commandDefination.FlagOptions.Add(new FlagOption(fullForm, abbrevationForm, description));
+            commandDefination.FlagOptions.Add(new OptionDefinitiationMetadata(fullForm, abbrevationForm, description));
             return this;
         }
 
@@ -35,7 +35,7 @@ namespace Parser
             if (abbrevationForm != null &&
                 commandDefination.FlagOptions.Any(
                     f => string.Equals(
-                        f.AbbrevationForm.ToString(),
+                        f.OptionSymbolMetadata.AbbrevationForm.ToString(),
                         abbrevationForm.ToString(),
                         StringComparison.OrdinalIgnoreCase)))
             {
@@ -46,7 +46,7 @@ namespace Parser
         void ValidateFullForm(string fullForm)
         {
             if (!string.IsNullOrEmpty(fullForm) &&
-                commandDefination.FlagOptions.Any(f => string.Equals(f.FullForm, fullForm, StringComparison.OrdinalIgnoreCase)))
+                commandDefination.FlagOptions.Any(f => string.Equals(f.OptionSymbolMetadata.FullForm, fullForm, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new ArgumentException("conflict full form");
             }

@@ -3,18 +3,23 @@ using System.Text.RegularExpressions;
 
 namespace Parser
 {
-    class FlagOption
+    internal interface IOptionDefinitionMetadata
     {
-        public string FullForm { get; }
-        public char? AbbrevationForm { get; }
+        string Description { get; }
+        IOptionSymbolMetadata OptionSymbolMetadata { get; }
+    }
+
+    class OptionDefinitiationMetadata : IOptionDefinitionMetadata
+    {
         public string Description { get; }
 
-        internal FlagOption(string fullForm, char? abbrevationFormForm, string description)
+        public IOptionSymbolMetadata OptionSymbolMetadata { get; }
+
+        internal OptionDefinitiationMetadata(string fullForm, char? abbrevationFormForm, string description)
         {
             ValidateFlagDefination(fullForm, abbrevationFormForm);
 
-            FullForm = fullForm;
-            AbbrevationForm = abbrevationFormForm;
+            OptionSymbolMetadata = new OptionSymbolMetadata(fullForm, abbrevationFormForm);
             Description = description;
         }
 
@@ -44,12 +49,12 @@ namespace Parser
             return !FlagRegex.FullFormRegex.IsMatch(fullForm);
         }
 
-        internal FlagOption GetFlag(string arg)
+        internal OptionDefinitiationMetadata GetFlag(string arg)
         {
             if (arg.StartsWith("--"))
             {
                 var option = arg.Substring(2, arg.Length - 2);
-                if (string.Equals(FullForm, option, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(OptionSymbolMetadata.FullForm, option, StringComparison.OrdinalIgnoreCase))
                 {
                     return this;
                 }
@@ -58,7 +63,7 @@ namespace Parser
             {
                 var option = arg.Substring(1, arg.Length - 1);
 
-                if (string.Equals(AbbrevationForm.ToString(), option, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(OptionSymbolMetadata.AbbrevationForm.ToString(), option, StringComparison.OrdinalIgnoreCase))
                 {
                     return this;
                 }
