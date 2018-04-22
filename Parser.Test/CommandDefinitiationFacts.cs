@@ -40,6 +40,21 @@ namespace Parser.Test
         }
 
         [Fact]
+        void should_return_empty_description_for_flag_not_defined_description()
+        {
+            ArgsParser parser = new ArgsParserBuilder()
+                .BeginDefaultCommand()
+                .AddFlagOption("flag", 'f', null)
+                .EndCommand()
+                .Build();
+            ArgsParsingResult result = parser.Parse(new[] { "--flag" });
+            Assert.True(result.IsSuccess);
+            IOptionDefinitionMetadata[] optionDefinitionMetadatas = result.Command.GetRegisteredOptionsMetadata().ToArray();
+            IOptionDefinitionMetadata flagMetadata = optionDefinitionMetadatas.Single(d => d.SymbolMetadata.FullForm.Equals("flag", StringComparison.OrdinalIgnoreCase));
+            Assert.Equal(string.Empty, flagMetadata.Description);
+        }
+
+        [Fact]
         void should_return_empty_description_for_default_command()
         {
             ArgsParser parser = new ArgsParserBuilder()

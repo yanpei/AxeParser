@@ -19,7 +19,7 @@ namespace Parser
             ValidateFlagDefination(fullForm, abbrevationFormForm);
 
             SymbolMetadata = new OptionSymbolMetadata(fullForm, abbrevationFormForm);
-            Description = description;
+            Description = description ?? string.Empty;
         }
 
         void ValidateFlagDefination(string fullForm, char? abbrevationForm)
