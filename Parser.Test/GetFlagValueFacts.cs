@@ -31,7 +31,6 @@ namespace Parser.Test
         [InlineData("- ")]
         [InlineData("-$")]
         [InlineData("---flag")]
-        [InlineData("--")]
         [InlineData("--fl$g")]
         void should_throw_ArgumentException_when_get_invalid_flag_value(string flag)
         {

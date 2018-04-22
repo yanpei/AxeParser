@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace Parser
 {
+    /// <summary>
+    /// build new command
+    /// </summary>
     public class CommandBuilder
     {
         internal readonly CommandDefination commandDefination;
@@ -52,6 +55,10 @@ namespace Parser
             }
         }
 
+        /// <summary>
+        /// end the command defination, and put the command into the parser.
+        /// </summary>
+        /// <returns></returns>
         public ArgsParserBuilder EndCommand()
         {
             argsParserBuilder.SetDefaultCommand(this);

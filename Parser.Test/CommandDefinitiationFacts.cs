@@ -81,7 +81,7 @@ namespace Parser.Test
             IOptionDefinitionMetadata flagMetadata =
                 result.Command.GetRegisteredOptionsMetadata()
                     .Single(d => d.SymbolMetadata.Abbreviation.ToString().Equals("f", StringComparison.OrdinalIgnoreCase));
-            Assert.Equal(null, flagMetadata.SymbolMetadata.FullForm);
+            Assert.Null(flagMetadata.SymbolMetadata.FullForm);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace Parser.Test
             IOptionDefinitionMetadata flagMetadata =
                 result.Command.GetRegisteredOptionsMetadata()
                     .Single(d => d.SymbolMetadata.FullForm.ToString().Equals("flag", StringComparison.OrdinalIgnoreCase));
-            Assert.Equal(null, flagMetadata.SymbolMetadata.Abbreviation);
+            Assert.Null(flagMetadata.SymbolMetadata.Abbreviation);
         }
     }
 }

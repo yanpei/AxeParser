@@ -2,9 +2,18 @@
 
 namespace Parser
 {
+    /// <summary>
+    /// option definitiation, including description and symbol
+    /// </summary>
     public interface IOptionDefinitionMetadata
     {
+        /// <summary>
+        /// option description, if not definied, will be empty string
+        /// </summary>
         string Description { get; }
+        /// <summary>
+        /// option symbol metadata
+        /// </summary>
         IOptionSymbolMetadata SymbolMetadata { get; }
     }
 

@@ -10,11 +10,18 @@ namespace Parser
     {
         readonly ArgsParser argsParser;
 
+        /// <summary>
+        /// init args parser
+        /// </summary>
         public ArgsParserBuilder()
         {
             argsParser = new ArgsParser();
         }
 
+        /// <summary>
+        /// return a new default comman
+        /// </summary>
+        /// <returns></returns>
         public CommandBuilder BeginDefaultCommand()
         {
             return new CommandBuilder(this, null, string.Empty);    
