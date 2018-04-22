@@ -8,9 +8,9 @@ namespace Parser
         internal readonly CommandDefination commandDefination;
         readonly ArgsParserBuilder argsParserBuilder;
 
-        public CommandBuilder(ArgsParserBuilder argsParserBuilder, string symbol)
+        public CommandBuilder(ArgsParserBuilder argsParserBuilder, string symbol, string description)
         {
-            commandDefination = new CommandDefination(symbol);
+            commandDefination = new CommandDefination(symbol, description);
             this.argsParserBuilder = argsParserBuilder;
         }
 

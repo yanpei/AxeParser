@@ -5,9 +5,16 @@ namespace Parser
 {
     public class CommandDefination : ICommandDefinitionMetadata
     {
-        public CommandDefination(string symbol) { Symbol = symbol; }
+        public CommandDefination(string symbol, string description)
+        {
+            Symbol = symbol;
+            Description = description;
+        }
+
         public string Symbol { get; }
+        public string Description { get;}
         internal HashSet<OptionDefinitiationMetadata> FlagOptions { get; set; } = new HashSet<OptionDefinitiationMetadata>();
+
 
         public IEnumerable<IOptionDefinitionMetadata> GetRegisteredOptionsMetadata()
         {

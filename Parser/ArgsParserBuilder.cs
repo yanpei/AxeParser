@@ -17,7 +17,7 @@ namespace Parser
 
         public CommandBuilder BeginDefaultCommand()
         {
-            return new CommandBuilder(this, null);    
+            return new CommandBuilder(this, null, string.Empty);    
         }
 
         /// <returns>Parser</returns>
