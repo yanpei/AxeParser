@@ -10,18 +10,7 @@ namespace Parser
     /// </summary>
     public class ArgsParser
     {
-        public ArgsParser(CommandDefination commandDefination)
-        {
-            if (commandDefination == null)
-            {
-                throw new ArgumentNullException(nameof(commandDefination));
-            }
-            command = commandDefination;
-        }
-
-        readonly CommandDefination command;
-
-        internal HashSet<FlagOption> FlagOptions { get; set; } = new HashSet<FlagOption>();
+        public CommandDefination DefaultCommand { get; set; }
 
         /// <summary>
         /// Validate args, will throw InvalidOperationException when parsing duplicated args.
@@ -65,7 +54,7 @@ namespace Parser
             }
 
             result.IsSuccess = true;
-            result.Command = command;
+            result.Command = DefaultCommand;
             return result;
         }
 
@@ -94,7 +83,7 @@ namespace Parser
 
         FlagOption GetFlag(string arg)
         {
-            return FlagOptions.FirstOrDefault(flag => flag.GetFlag(arg) != null);
+            return DefaultCommand.FlagOptions.FirstOrDefault(flag => flag.GetFlag(arg) != null);
         }
 
         void ValidateArgs(string[] args)

@@ -5,12 +5,12 @@ namespace Parser
 {
     public class CommandBuilder
     {
-        internal readonly ArgsParser parser;
+        internal readonly CommandDefination commandDefination;
         readonly ArgsParserBuilder argsParserBuilder;
 
         public CommandBuilder(ArgsParserBuilder argsParserBuilder, string symbol)
         {
-            parser = new ArgsParser(new CommandDefination(symbol));
+            commandDefination = new CommandDefination(symbol);
             this.argsParserBuilder = argsParserBuilder;
         }
 
@@ -26,14 +26,14 @@ namespace Parser
             ValidateFullForm(fullForm);
             ValidateAbbrevationForm(abbrevationForm);
 
-            parser.FlagOptions.Add(new FlagOption(fullForm, abbrevationForm, description));
+            commandDefination.FlagOptions.Add(new FlagOption(fullForm, abbrevationForm, description));
             return this;
         }
 
         void ValidateAbbrevationForm(char? abbrevationForm)
         {
             if (abbrevationForm != null &&
-                parser.FlagOptions.Any(
+                commandDefination.FlagOptions.Any(
                     f => string.Equals(
                         f.AbbrevationForm.ToString(),
                         abbrevationForm.ToString(),
@@ -46,7 +46,7 @@ namespace Parser
         void ValidateFullForm(string fullForm)
         {
             if (!string.IsNullOrEmpty(fullForm) &&
-                parser.FlagOptions.Any(f => string.Equals(f.FullForm, fullForm, StringComparison.OrdinalIgnoreCase)))
+                commandDefination.FlagOptions.Any(f => string.Equals(f.FullForm, fullForm, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new ArgumentException("conflict full form");
             }
