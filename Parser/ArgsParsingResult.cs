@@ -36,7 +36,7 @@ namespace Parser
                 {
                     throw new ArgumentException("flag is invalid");
                 }
-                return FlagOptions.Any(f => string.Equals(f.OptionSymbolMetadata.FullForm, option, StringComparison.OrdinalIgnoreCase));
+                return FlagOptions.Any(f => string.Equals(f.SymbolMetadata.FullForm, option, StringComparison.OrdinalIgnoreCase));
             }
             if (flag.StartsWith("-"))
             {
@@ -45,7 +45,7 @@ namespace Parser
                 {
                     throw new ArgumentException("flag is invalid");
                 }
-                return FlagOptions.Any(f => string.Equals(f.OptionSymbolMetadata.AbbrevationForm.ToString(), option, StringComparison.OrdinalIgnoreCase));
+                return FlagOptions.Any(f => string.Equals(f.SymbolMetadata.Abbreviation.ToString(), option, StringComparison.OrdinalIgnoreCase));
             }
             return false;
         }

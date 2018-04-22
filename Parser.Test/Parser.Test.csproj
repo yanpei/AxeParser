@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddFlagsFacts.cs" />
+    <Compile Include="CommandDefinitiationFacts.cs" />
     <Compile Include="GetFlagValueFacts.cs" />
     <Compile Include="ParseFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

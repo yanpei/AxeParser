@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 namespace Parser
 {
-    internal interface IOptionDefinitionMetadata
+    public interface IOptionDefinitionMetadata
     {
         string Description { get; }
-        IOptionSymbolMetadata OptionSymbolMetadata { get; }
+        IOptionSymbolMetadata SymbolMetadata { get; }
     }
 
     class OptionDefinitiationMetadata : IOptionDefinitionMetadata
     {
         public string Description { get; }
 
-        public IOptionSymbolMetadata OptionSymbolMetadata { get; }
+        public IOptionSymbolMetadata SymbolMetadata { get; }
 
         internal OptionDefinitiationMetadata(string fullForm, char? abbrevationFormForm, string description)
         {
             ValidateFlagDefination(fullForm, abbrevationFormForm);
 
-            OptionSymbolMetadata = new OptionSymbolMetadata(fullForm, abbrevationFormForm);
+            SymbolMetadata = new OptionSymbolMetadata(fullForm, abbrevationFormForm);
             Description = description;
         }
 
@@ -54,7 +53,7 @@ namespace Parser
             if (arg.StartsWith("--"))
             {
                 var option = arg.Substring(2, arg.Length - 2);
-                if (string.Equals(OptionSymbolMetadata.FullForm, option, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(SymbolMetadata.FullForm, option, StringComparison.OrdinalIgnoreCase))
                 {
                     return this;
                 }
@@ -63,7 +62,7 @@ namespace Parser
             {
                 var option = arg.Substring(1, arg.Length - 1);
 
-                if (string.Equals(OptionSymbolMetadata.AbbrevationForm.ToString(), option, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(SymbolMetadata.Abbreviation.ToString(), option, StringComparison.OrdinalIgnoreCase))
                 {
                     return this;
                 }

@@ -1,20 +1,20 @@
 ﻿namespace Parser
 {
-    internal interface IOptionSymbolMetadata
+    public interface IOptionSymbolMetadata
     {
         string FullForm { get; }
-        char? AbbrevationForm { get; }
+        char? Abbreviation { get; }
     }
 
     class OptionSymbolMetadata : IOptionSymbolMetadata
     {
-        public OptionSymbolMetadata(string fullForm, char? abbrevationForm)
+        public OptionSymbolMetadata(string fullForm, char? abbreviation)
         {
             FullForm = fullForm;
-            AbbrevationForm = abbrevationForm;
+            Abbreviation = abbreviation;
         }
 
         public string FullForm { get; }
-        public char? AbbrevationForm { get; }
+        public char? Abbreviation { get; }
     }
 }
